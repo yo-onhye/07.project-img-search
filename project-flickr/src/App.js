@@ -14,6 +14,7 @@ class App extends Component {
 		privacy_filter: 5,
 		format: "json",
 		nojsoncallback: 1,
+		tag: "",
 		datas: null,
 	};
 
@@ -23,7 +24,13 @@ class App extends Component {
 				loading: true,
 			});
 
-			const response = await axios.get(`${this.state.url}method=${this.state.interest}&api_key=${this.state.key}&per_page=${this.state.per_page}&tagmode=${this.state.tagmode}&privacy_filter=${this.state.privacy_filter}&format=${this.state.format}&nojsoncallback=${this.state.nojsoncallback}`);
+			let response = '';
+
+			if (this.state.tag === "") {
+				response = await axios.get(`${this.state.url}method=${this.state.interest}&api_key=${this.state.key}&per_page=${this.state.per_page}&tagmode=${this.state.tagmode}&privacy_filter=${this.state.privacy_filter}&format=${this.state.format}&nojsoncallback=${this.state.nojsoncallback}`);
+			} else {
+				response = await axios.get(`${this.state.url}method=${this.state.search}&api_key=${this.state.key}&per_page=${this.state.per_page}&tagmode=${this.state.tagmode}&privacy_filter=${this.state.privacy_filter}&format=${this.state.format}&nojsoncallback=${this.state.nojsoncallback}&tags=${this.state.tag}`);
+			}
 
 			this.setState({
 				datas: response.data.photos,
@@ -34,6 +41,23 @@ class App extends Component {
 		this.setState({
 			loading: false,
 		});
+	};
+
+	handleChange = (e) => {
+		const { value, name } = e.target;
+
+		this.setState({
+			[name]: value,
+		});
+	};
+
+	handleInsert = (e) => {
+		e.preventDefault();
+
+		this.setState({
+			tag: "",
+		});
+		this.getData();
 	};
 
 	componentDidMount() {
@@ -54,26 +78,28 @@ class App extends Component {
 					<h1 className='logo'>Img Search</h1>
 				</header>
 				<section className='searchBox'>
-					<input type='text' id='search' placeholder='검색어 입력' title='검색어를 입력하세요' />
-					<button type='button' className='searchBtn'>
-						Search
-					</button>
+					<form onSubmit={this.handleInsert}>
+						<input type='text' value={this.state.tag} name='tag' id='search' onChange={this.handleChange} placeholder='검색어 입력' title='검색어를 입력하세요' />
+						<button type='submit' className='searchBtn'>
+							Search
+						</button>
+					</form>
 				</section>
 				<section className='content'>
 					{loading && <h2 className='loadingTxt'>데이터 로딩 중 입니다:D</h2>}
 					<ul id='list'>
-						{!loading && datas && 
+						{!loading &&
+							datas &&
 							datas.photo.map((data) => (
 								<li key={data.id}>
 									<div>
 										<a href={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}>
-											<img src={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} alt="" />
+											<img src={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} alt='' />
 										</a>
 										<p>{data.title}</p>
 									</div>
 								</li>
-							))
-						}
+							))}
 					</ul>
 					<p className='alert'></p>
 				</section>

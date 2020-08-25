@@ -8,4 +8,14 @@
 
 ## Tech Stack.
 
-React, ES6, Css
+React, Axios, Isotope, ES6, Css
+
+## Process.
+
+**08.24**
+- Flickr API 연동
+- 초기화면 진입 시 인기순 10개 이미지 호출
+
+**08.25**
+- 검색 기능 구현
+- 검색 시 데이터 재호출 구현
