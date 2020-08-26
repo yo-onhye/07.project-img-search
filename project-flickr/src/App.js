@@ -16,7 +16,7 @@ class App extends Component {
 		interest: "flickr.interestingness.getList",
 		search: "flickr.photos.search",
 		key: "b27343c07ef22647404873055e1a3b3e",
-		per_page: 30,
+		per_page: 10,
 		tagmode: "any",
 		privacy_filter: 5,
 		format: "json",
