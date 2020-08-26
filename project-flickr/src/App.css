@@ -183,13 +183,89 @@ body {
 		left: 330px;
 	}
 }
+
+/* loading */
+.projcetLoader {
+	margin: 100px auto;
+	width: 500px;
+	height: 100px;
+	font-size: 10px;
+	text-align: center;
+}
+.projcetLoader span {
+	display: inline-block;
+	width: 10px;
+	height: 100%;
+	margin-left: 5px;
+	-webkit-animation: delay 0.8s infinite ease-in-out;
+	animation: delay 0.8s infinite ease-in-out;
+	vertical-align: top;
+}
+
+.projcetLoader .bar1 {
+	background-color: #f26f6f;
+}
+.projcetLoader .bar2 {
+	background-color: #f2da6f;
+	-webkit-animation-delay: -0.7s;
+	animation-delay: -0.7s;
+}
+.projcetLoader .bar3 {
+	background-color: #bbf26f;
+	-webkit-animation-delay: -0.6s;
+	animation-delay: -0.6s;
+}
+.projcetLoader .bar4 {
+	background-color: #6fa5f2;
+	-webkit-animation-delay: -0.5s;
+	animation-delay: -0.5s;
+}
+.projcetLoader .bar5 {
+	background-color: #6fa5f2;
+	-webkit-animation-delay: -0.4s;
+	animation-delay: -0.4s;
+}
+.projcetLoader .bar6 {
+	background-color: #756ff2;
+	-webkit-animation-delay: -0.3s;
+	animation-delay: -0.3s;
+}
+.loadingText {
+	margin-top: 20px;
+	font-size: 15px;
+	text-align: center;
+}
+@-webkit-keyframes delay {
+	0%,
+	40%,
+	100% {
+		-webkit-transform: scaleY(0.05);
+	}
+	20% {
+		-webkit-transform: scaleY(1);
+	}
+}
+
+@keyframes delay {
+	0%,
+	40%,
+	100% {
+		transform: scaleY(0.05);
+		-webkit-transform: scaleY(0.05);
+	}
+	20% {
+		transform: scaleY(1);
+		-webkit-transform: scaleY(1);
+	}
+}
+
 /* search box */
-.searchBox {
+.projectSearchBox {
 	padding: 10px 30px;
 	font-size: 0;
 	text-align: right;
 }
-#search {
+.projectSearchInput {
 	width: 60%;
 	max-width: 300px;
 	height: 40px;
@@ -204,7 +280,7 @@ body {
 	box-sizing: border-box;
 	outline: transparent;
 }
-.searchBtn {
+.projectSearchBtn {
 	display: inline-block;
 	max-width: 30%;
 	height: 40px;
@@ -222,17 +298,17 @@ body {
 }
 
 /* content list */
-.content {
+.projectContent {
 	padding: 15px 20px;
 }
-#list li {
+.projectList li {
 	float: left;
 	width: 25%;
 	padding: 10px;
 	box-sizing: border-box;
 }
 
-#list li > div {
+.projectList li > div {
 	overflow: hidden;
 	position: relative;
 	display: block;
@@ -242,7 +318,7 @@ body {
 	background: #fff;
 }
 
-#list li a {
+.projectList li a {
 	overflow: hidden;
 	display: inline-block;
 	position: relative;
@@ -252,23 +328,18 @@ body {
 	vertical-align: top;
 }
 
-#list li img {
+.projectList li img {
 	width: 100%;
 	vertical-align: top;
 }
 
-#list li p {
+.projectList li p {
 	margin-top: 15px;
 	color: #2f332f;
 	font-size: 14px;
 	line-height: 18px;
 }
-.loadingTxt {
-	margin: 50px 0;
-	color: #2f332f;
-	font-size: 24px;
-	text-align: center;
-}
+
 .alert {
 	margin: 50px 0;
 	color: #2f332f;
@@ -276,7 +347,7 @@ body {
 	text-align: center;
 }
 @media screen and (max-width: 999px) {
-	#list li {
+	.projectList li {
 		width: 33.33%;
 	}
 }
@@ -285,12 +356,12 @@ body {
 		margin-left: 5%;
 		font-size: 12px;
 	}
-	#list li {
+	.projectList li {
 		width: 50%;
 	}
 }
 @media screen and (max-width: 439px) {
-	#list li {
+	.projectList li {
 		width: 100%;
 	}
 }

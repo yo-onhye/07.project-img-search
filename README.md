@@ -8,7 +8,7 @@
 
 ## Tech Stack.
 
-React, Axios, Isotope, ES6, Css
+React, Axios, Masonry, ES6, Css
 
 ## Process.
 
@@ -19,3 +19,7 @@ React, Axios, Isotope, ES6, Css
 **08.25**
 - 검색 기능 구현
 - 검색 시 데이터 재호출 구현
+
+**08.26**
+- 로고 애니메이션 추가
+- Masonry를 이용해 게시글 정렬 → Isotope로 변경 예정
