@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Masonry from 'react-masonry-component';
+import Masonry from "react-masonry-component";
 import "./App.css";
 
 const masonryOptions = {
-	transitionDuration: 0
+	transitionDuration: 0,
 };
- 
-const imagesLoadedOptions = { background: '.my-bg-image-el' }
+
+const imagesLoadedOptions = { background: ".my-bg-image-el" };
 
 class App extends Component {
 	state = {
 		loading: false,
+		searchOpen: false,
 		url: "https://www.flickr.com/services/rest/?",
 		interest: "flickr.interestingness.getList",
 		search: "flickr.photos.search",
@@ -61,10 +62,17 @@ class App extends Component {
 	handleInsert = (e) => {
 		e.preventDefault();
 
-		this.setState({
-			tag: "",
-		});
-		this.getData();
+		if (!this.state.searchOpen) {
+			this.setState({
+				searchOpen: true,
+			});
+		} else if (this.state.searchOpen && this.state.tag !== "") {
+			this.setState({
+				searchOpen: false,
+				tag: "",
+			});
+			this.getData();
+		}
 	};
 
 	componentDidMount() {
@@ -78,28 +86,29 @@ class App extends Component {
 	}
 
 	render() {
-		const { datas, loading } = this.state;
+		const { datas, loading, searchOpen } = this.state;
 
 		return (
 			<div className='projectMain'>
 				<header className='projcetLogo'>
 					<h1 className='logo'>
-						<span className="s1">I</span>
-						<span className="s2">m</span>
-						<span className="s3">g</span>
-						<span className="s4">S</span>
-						<span className="s5">e</span>
-						<span className="s6">a</span>
-						<span className="s7">r</span>
-						<span className="s8">c</span>
-						<span className="s8">h</span>
+						<span className='s1'>I</span>
+						<span className='s2'>m</span>
+						<span className='s3'>g</span>
+						<span className='s4'>S</span>
+						<span className='s5'>e</span>
+						<span className='s6'>a</span>
+						<span className='s7'>r</span>
+						<span className='s8'>c</span>
+						<span className='s8'>h</span>
 					</h1>
 				</header>
-				<section className='projectSearchBox'>
-					<form onSubmit={this.handleInsert}>
+				<section className={`projectSearchBox ${searchOpen && "active"}`}>
+					<form className='projectSearch' onSubmit={this.handleInsert}>
 						<input type='text' value={this.state.tag} name='tag' className='projectSearchInput' onChange={this.handleChange} placeholder='검색어 입력' title='검색어를 입력하세요' />
 						<button type='submit' className='projectSearchBtn'>
-							Search
+							<i className='icoSearch'></i>
+							<span className='blind'>검색하기</span>
 						</button>
 					</form>
 				</section>
@@ -112,19 +121,14 @@ class App extends Component {
 							<span className='bar4'></span>
 							<span className='bar5'></span>
 							<span className='bar6'></span>
-							<p className="loadingText">Loading...</p>
+							<p className='loadingText'>Loading...</p>
 						</div>
 					)}
-					<Masonry
-						elementType={'ul'}
-						className={'projectList'}
-						options={masonryOptions}
-						imagesLoadedOptions={imagesLoadedOptions}
-					>
+					<Masonry elementType={"ul"} className={"projectList"} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions}>
 						{!loading &&
 							datas &&
 							datas.photo.map((data) => (
-								<li key={data.id} className="item">
+								<li key={data.id} className='item'>
 									<div>
 										<a href={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}>
 											<img src={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} alt='' />
