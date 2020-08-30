@@ -7,23 +7,26 @@ const masonryOptions = {
 	transitionDuration: 0,
 };
 
-const imagesLoadedOptions = { background: ".my-bg-image-el" };
+const imagesLoadedOptions = { background: ".item" };
 
 class App extends Component {
 	state = {
-		loading: false,
-		searchOpen: false,
 		url: "https://www.flickr.com/services/rest/?",
 		interest: "flickr.interestingness.getList",
 		search: "flickr.photos.search",
 		key: "b27343c07ef22647404873055e1a3b3e",
-		per_page: 10,
+		per_page: 100,
 		tagmode: "any",
-		privacy_filter: 5,
+		privacy_filter: 10,
 		format: "json",
 		nojsoncallback: 1,
 		tag: "",
+		limit: 10,
 		datas: null,
+		showData: null,
+		isShowMore: true,
+		isSearchOpen: false,
+		loading: false,
 	};
 
 	getData = async () => {
@@ -41,14 +44,16 @@ class App extends Component {
 			}
 
 			this.setState({
-				datas: response.data.photos,
+				datas: response.data.photos.photo,
 			});
 		} catch (e) {
 			console.error(e);
 		}
 		this.setState({
 			loading: false,
+			limit: 10,
 		});
+		this.handleSortList();
 	};
 
 	handleChange = (e) => {
@@ -62,17 +67,49 @@ class App extends Component {
 	handleInsert = (e) => {
 		e.preventDefault();
 
-		if (!this.state.searchOpen) {
+		if (!this.state.isSearchOpen) {
 			this.setState({
-				searchOpen: true,
+				isSearchOpen: true,
 			});
-		} else if (this.state.searchOpen && this.state.tag !== "") {
+		} else if (this.state.isSearchOpen && this.state.tag !== "") {
 			this.setState({
-				searchOpen: false,
+				isSearchOpen: false,
 				tag: "",
 			});
 			this.getData();
 		}
+	};
+
+	handleSortList = () => {
+		if (this.state.datas !== null) {
+			this.setState({
+				showData: this.state.datas.slice(0, this.state.limit),
+			});
+		}
+	};
+
+	handleShowMore = () => {
+		const { limit, datas, per_page } = this.state;
+
+		if (limit >= per_page - 10) {
+			this.setState({
+				isShowMore: false,
+			});
+		} else {
+			this.setState({
+				limit: limit + 10,
+				showData: datas.slice(0, limit + 10),
+			});
+		}
+	};
+
+	renderButton = () => {
+		if (!this.state.isShowMore) return null;
+		return (
+			<button type='button' className='ProjectBtnMore' onClick={this.handleShowMore}>
+				<span>더보기</span>
+			</button>
+		);
 	};
 
 	componentDidMount() {
@@ -80,13 +117,17 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.datas !== prevProps.datas) {
-			this.getData();
+		if (this.props.showData !== prevProps.showData) {
+			console.log("mount");
+			this.handleSortList();
+			this.setState({
+				showData: this.statedatas.slice(0, this.state.limit + 10),
+			});
 		}
 	}
 
 	render() {
-		const { datas, loading, searchOpen } = this.state;
+		const { datas, showData, loading, isSearchOpen } = this.state;
 
 		return (
 			<div className='projectMain'>
@@ -103,7 +144,7 @@ class App extends Component {
 						<span className='s8'>h</span>
 					</h1>
 				</header>
-				<section className={`projectSearchBox ${searchOpen && "active"}`}>
+				<section className={`projectSearchBox ${isSearchOpen && "active"}`}>
 					<form className='projectSearch' onSubmit={this.handleInsert}>
 						<input type='text' value={this.state.tag} name='tag' className='projectSearchInput' onChange={this.handleChange} placeholder='검색어 입력' title='검색어를 입력하세요' />
 						<button type='submit' className='projectSearchBtn'>
@@ -124,20 +165,22 @@ class App extends Component {
 							<p className='loadingText'>Loading...</p>
 						</div>
 					)}
-					<Masonry elementType={"ul"} className={"projectList"} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions}>
-						{!loading &&
-							datas &&
-							datas.photo.map((data) => (
-								<li key={data.id} className='item'>
-									<div>
-										<a href={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}>
-											<img src={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} alt='' />
-										</a>
-										<p>{data.title}</p>
-									</div>
-								</li>
-							))}
-					</Masonry>
+					{!loading && datas !== null && (
+						<Masonry elementType={"ul"} className={"projectList"} options={masonryOptions} imagesLoadedOptions={imagesLoadedOptions}>
+							{showData !== null &&
+								showData.map((data) => (
+									<li key={data.id} className='item'>
+										<div>
+											<a href={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}>
+												<img src={`https://farm${data.farm}.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`} alt='' />
+											</a>
+											<p>{data.title}</p>
+										</div>
+									</li>
+								))}
+						</Masonry>
+					)}
+					{this.renderButton()}
 				</section>
 			</div>
 		);
