@@ -112,13 +112,30 @@ class App extends Component {
 		);
 	};
 
+	letterJS = (selector) => {
+		const wrap = document.querySelector(selector);
+		let str = wrap.innerText;
+		wrap.innerText = "";
+		let index = 0;
+
+		for (let i of str) {
+			let newSpan = document.createElement("span");
+			newSpan.classList.add("s" + index);
+			newSpan.innerText = i;
+			newSpan.style.transitionDelay = 0.1 * index + "s";
+			newSpan.style.animationDelay = 0.1 * index + "s";
+			wrap.appendChild(newSpan);
+			index++;
+		}
+	}
+
 	componentDidMount() {
 		this.getData();
+		this.letterJS('.logo');
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.showData !== prevProps.showData) {
-			console.log("mount");
 			this.handleSortList();
 			this.setState({
 				showData: this.statedatas.slice(0, this.state.limit + 10),
@@ -132,17 +149,7 @@ class App extends Component {
 		return (
 			<div className='projectMain'>
 				<header className='projcetLogo'>
-					<h1 className='logo'>
-						<span className='s1'>I</span>
-						<span className='s2'>m</span>
-						<span className='s3'>g</span>
-						<span className='s4'>S</span>
-						<span className='s5'>e</span>
-						<span className='s6'>a</span>
-						<span className='s7'>r</span>
-						<span className='s8'>c</span>
-						<span className='s8'>h</span>
-					</h1>
+					<h1 className='logo'>ImgSearch</h1>
 				</header>
 				<section className={`projectSearchBox ${isSearchOpen && "active"}`}>
 					<form className='projectSearch' onSubmit={this.handleInsert}>
