@@ -340,7 +340,7 @@ body {
 }
 @media screen and (max-width: 999px) {
 	.projectList li {
-		width: 25%;
+		width: 33.33%;
 	}
 }
 @media screen and (max-width: 749px) {
@@ -352,7 +352,7 @@ body {
 		font-size: 12px;
 	}
 	.projectList li {
-		width: 33.33%;
+		width: 50%;
 	}
 	.ProjectBtnMore {
 		width: 100%;
@@ -363,7 +363,7 @@ body {
 		font-size: 21px;
 	}
 	.projectList li {
-		width: 50%;
+		width: 100%;
 	}
 }
 
