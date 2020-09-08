@@ -122,7 +122,6 @@ class App extends Component {
 			let newSpan = document.createElement("span");
 			newSpan.classList.add("s" + index);
 			newSpan.innerText = i;
-			newSpan.style.transitionDelay = 0.1 * index + "s";
 			newSpan.style.animationDelay = 0.1 * index + "s";
 			wrap.appendChild(newSpan);
 			index++;
